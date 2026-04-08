@@ -76,6 +76,6 @@ To scale this from a Proof-of-Concept to an Enterprise-grade system, the followi
 3. [ ] Containerization: Wrap the application in a Docker container for cloud-agnostic deployment.
 
 ## Team
-1. Utsav Saxena
-2. Sarthak Sahu
-3. Animesh Jha
+1. Teammate 1 : Utsav Saxena
+2. Teammate 2 : Sarthak Sahu
+3. Teammate 3 : Animesh Jha

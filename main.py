@@ -1,56 +1,50 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
-import numpy as np
+from rag_engine import get_maintenance_suggestions
 
-# --- TEAMMATE 2: Import the RAG function ---
-RAG_IMPORT_ERROR = None
-try:
-    from rag_engine import get_maintenance_suggestions
-except BaseException as e:
-    RAG_IMPORT_ERROR = str(e)
+app = FastAPI(title="AeroSense IoT Diagnostic API")
 
-model = None
-try:
-    model = joblib.load('model.joblib')
-except FileNotFoundError:
-    print("Error: Model not found. Run train_model.py first!")
+# This tells the API to allow our future web dashboard to talk to it
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all web domains
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows POST, GET, etc.
+    allow_headers=["*"],  # Allows all headers
+)
 
-app = FastAPI(title="AeroSense Predictive Maintenance API")
-
-class SensorData(BaseModel):
-    Temperature: float
-    Vibration: float
-    Pressure: float
+# Load the new 8-feature model
+model = joblib.load("model.joblib")
 
 @app.post("/predict")
 def predict_status(data: SensorData):
-    if model is None:
-        raise HTTPException(status_code=500, detail="Model not loaded. Run train_model.py first.")
+    # Pass all 8 features to the AI model
+    input_data = [[
+        data.Temperature,
+        data.Vibration,
+        data.Pressure,
+        data.Speed,
+        data.RPM,
+        data.Odometer,
+        data.Battery_Voltage,
+        data.Outside_Temp
+    ]]
 
-    input_data = np.array([[data.Temperature, data.Vibration, data.Pressure]])
-    prediction = model.predict(input_data)
-    
-    # --- TEAMMATE 2: Add RAG Logic Here ---
-    if prediction[0] == 1:
-        result = "Anomaly"
-        # Turn the raw numbers into a sentence so the Vector DB can understand it
-        query_string = f"Anomaly detected with Temperature {data.Temperature}, Vibration {data.Vibration}, Pressure {data.Pressure}"
-        
-        # Ask ChromaDB for the 3 best fixes if the optional RAG layer is available
-        if RAG_IMPORT_ERROR is None:
-            try:
-                suggestions = get_maintenance_suggestions(query_string)
-            except Exception as e:
-                suggestions = [f"RAG query failed: {e}"]
-        else:
-            suggestions = [f"RAG unavailable: {RAG_IMPORT_ERROR}"]
-    else:
-        result = "Normal"
-        suggestions = ["System operating normally. No maintenance required."]
-        
+    prediction = model.predict(input_data)[0]
+
+    # If the AI detects anything other than "Normal", trigger the RAG Engine
+    if prediction != "Normal":
+        # We give the RAG engine the specific failure type so it gives highly accurate advice!
+        query_text = f"Vehicle diagnosed with {prediction}. Current sensors: Temp {data.Temperature}C, Battery {data.Battery_Voltage}V, Pressure {data.Pressure}PSI."
+        fixes = get_maintenance_suggestions(query_text)
+        return {
+            "prediction": prediction,
+            "recommended_fixes": fixes
+        }
+
     return {
-        "input_received": data.dict(),
-        "prediction": result,
-        "recommended_fixes": suggestions # The API now returns your RAG fixes!
+        "prediction": prediction,
+        "recommended_fixes": ["System healthy. All telemetry within normal parameters."]
     }
