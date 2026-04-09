@@ -6,18 +6,18 @@
 ![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector_DB-E91E63?style=flat)
 ![Render](https://img.shields.io/badge/Cloud-Render-46E3B7?style=flat&logo=render&logoColor=white)
 
-🟢 **Live API Documentation:** [AeroSense Swagger UI](https://aerosense-mlops-pipeline.onrender.com/docs)
+**Live API Documentation:** [AeroSense Swagger UI](https://aerosense-mlops-pipeline.onrender.com/docs)
 
 ---
 
-## 📝 Executive Summary
+## Executive Summary
 In fleet management and autonomous vehicles, unexpected hardware failure isn't just expensive—it's dangerous. **AeroSense.AI** is an end-to-end cloud MLOps pipeline and native mobile application designed to predict sensor anomalies in real-time and provide immediate, context-aware maintenance recommendations to drivers and engineers.
 
 Instead of outputting a generic "Check Engine" light, this system evaluates an **8-point telemetry stream**. If an anomaly is detected, it uses **Retrieval-Augmented Generation (RAG)** to query a local vector database of historical maintenance logs, instantly triggering a mobile alert to tell the user why the failure is likely happening and how to fix it.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 **The Data Flow:**
 
 1.  **Mobile Telemetry Simulation:** A native Android app injects real-time, physics-based OBD-II sensor data across 8 parameters (Temperature, Vibration, Pressure, Speed, RPM, Odometer, Battery Voltage, Outside Temp) using distinct failure scenarios.
@@ -28,7 +28,7 @@ Instead of outputting a generic "Check Engine" light, this system evaluates an *
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 * **Mobile Frontend:** React Native, Expo (EAS Build), @expo/vector-icons, expo-av (Audio Engine)
 * **API & Routing:** FastAPI, Uvicorn, CORS Middleware
 * **Cloud Deployment:** Render (PaaS)
@@ -37,7 +37,7 @@ Instead of outputting a generic "Check Engine" light, this system evaluates an *
 
 ---
 
-## ✨ Core Features
+## Core Features
 * **Native Android Dashboard:** A high-fidelity mobile interface featuring dark mode, dynamic telemetry gauges, and an interactive ML Scenario Tester.
 * **Live Cloud Inference:** RESTful API deployed on Render, completely detached from local compute for true distributed processing.
 * **Contextual AI (RAG):** Bridges the gap between predictive ML and actionable engineering via vector embeddings.
@@ -46,7 +46,7 @@ Instead of outputting a generic "Check Engine" light, this system evaluates an *
 
 ---
 
-## 🚀 Quick Start / Deployment
+## Quick Start / Deployment
 
 ### Part 1: The Mobile App (Frontend)
 Experience the system directly on your Android device.
@@ -83,7 +83,7 @@ If you want to train the model or run the API locally:
 
 ---
 
-## 🗺️ Future Scope & Roadmap
+## Future Scope & Roadmap
 To scale this from a Proof-of-Concept to an Enterprise-grade system, the following features are in active development:
 
 * [x] **Native Mobile Frontend:** (Completed in v1.0.0)
@@ -93,7 +93,7 @@ To scale this from a Proof-of-Concept to an Enterprise-grade system, the followi
 
 ---
 
-## 👥 The Engineering Team
+## The Engineering Team
 * **Teammate 1:** Utsav Saxena
 * **Teammate 2:** Sarthak Sahu
 * **Teammate 3:** Animesh Jha
