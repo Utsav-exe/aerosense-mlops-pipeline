@@ -86,7 +86,7 @@ If you want to train the model or run the API locally:
 ## Future Scope & Roadmap
 To scale this from a Proof-of-Concept to an Enterprise-grade system, the following features are in active development:
 
-* [x] **Native Mobile Frontend:** (Completed in v1.0.0)
+* [X] **Native Mobile Frontend:** (Completed in v1.0.0)
 * [ ] **Live OBD-II Bluetooth Integration:** Transitioning from the simulated testing environment to bridging the mobile app directly with ELM327 hardware scanners.
 * [ ] **Data Drift Detection:** Implement EventuallyAI to monitor incoming sensor distributions and trigger alerts if the ML model's operating environment changes.
 * [ ] **Model Registry:** Move model artifacts from local `.joblib` files to an MLflow tracking server.
